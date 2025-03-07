@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://10.242.16.4:8888')
+const ws = new WebSocket('ws://127.0.0.1:8888')
 ws.binaryType = 'blob'
 const open = () => {
 	ws.onopen = (event) => {
