@@ -81,18 +81,24 @@ const App = () => {
     }
     return flattenArray(items);
   }, [items]);
+  console.log(flatItems);
   
   /**
    * 点击菜单时触发，获取当前菜单的面包屑
    * */
-  function onselectMenu({ key }) {
+  function onselectMenu({ item, key, keyPath, selectedKeys }) {
+    console.log(item, key, keyPath, selectedKeys);
+    
     setBreadcrumbName([]);
+    let currentMenu = null
+    
     // 递归查找当前菜单项及其父级的 label
     function findLabelsByKey(arr, key, path = []) {
       // 遍历数组，查找当前菜单项
       for (const item of arr) {
         // 如果当前菜单项的 key 与传入的 key 相等，返回当前菜单项的 label
         if (item.key === key) {
+          currentMenu = item;
           return [...path, item.label];
         }
         // 如果当前菜单项有子菜单，递归调用 findLabelsByKey
@@ -107,12 +113,7 @@ const App = () => {
     if (labels) {
       // 设置面包屑标题
       setBreadcrumbName(labels);
-      // 跳转到当前菜单项对应的路由，如果当前菜单项的 key 以 '/-' 开头，截取掉 '/-'，否则直接跳转
-      
-      let cleanedKey = key.replace(/\/+/g, '/');
-      console.log(cleanedKey);
-      
-      navigate(cleanedKey);
+      navigate(currentMenu.path);
     }
   }
 
